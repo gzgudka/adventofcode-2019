@@ -1,15 +1,11 @@
 package adventofcode;
 
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.stream.IntStream;
 
 public class Day1 {
     public static void main(String[] args) {
-        List<Integer> modules = Arrays.asList(
+        int fuel = IntStream.of(
                 147129,
                 128896,
                 86366,
@@ -110,21 +106,26 @@ public class Day1 {
                 145232,
                 133984,
                 139994
-        );
+        ).map(Day1::total)
+                .reduce(Integer::sum)
+                .getAsInt();
 
-
-        Optional<BigDecimal> reduce = modules.stream()
-                .map(BigDecimal::new)
-                .map(Day1::fuel)
-                .reduce(BigDecimal::add);
-
-        System.out.println(reduce);
+        System.out.println(fuel);
     }
 
-    static BigDecimal three = new BigDecimal(3);
-    static BigDecimal two = new BigDecimal(2);
+    static int fuel(int mass) {
+        return Math.max((mass / 3) - 2, 0);
+    }
 
-    static BigDecimal fuel(BigDecimal mass) {
-        return mass.divide(three, 10, RoundingMode.DOWN).subtract(two).setScale(0, RoundingMode.DOWN);
+    static int total(int mass) {
+        int fuel = mass;
+        int total = 0;
+
+        do {
+            fuel = fuel(fuel);
+            total += fuel;
+        } while (fuel > 0);
+
+        return total;
     }
 }

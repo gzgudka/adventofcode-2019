@@ -24,7 +24,6 @@ public class Day2 {
         Integer[] array = find(raw);
         int res = 100 * array[0] + array[1];
         System.out.println(res);
-
     }
 
     String run() {
